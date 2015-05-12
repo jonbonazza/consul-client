@@ -8,6 +8,8 @@ import com.orbitz.consul.option.PutOptions;
 import com.orbitz.consul.option.PutOptionsBuilder;
 import com.orbitz.consul.option.QueryOptions;
 import com.orbitz.consul.util.ClientUtil;
+import com.orbitz.consul.watch.ConsulWatcherCallback;
+import com.orbitz.consul.watch.KeyValueWatcher;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.NotFoundException;
@@ -16,7 +18,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.FutureTask;
 
 import static com.orbitz.consul.util.ClientUtil.decodeBase64;
 
@@ -287,4 +291,11 @@ public class KeyValueClient {
         return putValue(key, "", 0, PutOptionsBuilder.builder().release(sessionId).build());
     }
 
+    public FutureTask<Void> watch(String key, ConsulWatcherCallback<Value> callback) {
+        return new FutureTask<>(new KeyValueWatcher(this, callback, key), null);
+    }
+
+    public FutureTask<Void> watch(String key, ConsulWatcherCallback<Value> callback, Duration wait) {
+           return new FutureTask<>(new KeyValueWatcher(this, callback, key, wait), null);
+    }
 }
