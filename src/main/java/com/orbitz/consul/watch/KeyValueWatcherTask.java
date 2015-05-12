@@ -8,21 +8,21 @@ import com.orbitz.consul.option.QueryOptionsBuilder;
 import java.time.Duration;
 import java.util.Queue;
 
-public class KeyValueWatcher extends Watcher<Value> {
+public class KeyValueWatcherTask extends WatcherTask<Value> {
 
     private KeyValueClient client;
     private Duration wait;
     private String key;
     private boolean done = false;
 
-    public KeyValueWatcher(KeyValueClient client, ConsulWatcherCallback<Value> callback, String key, Duration wait) {
+    public KeyValueWatcherTask(KeyValueClient client, ConsulWatcherCallback<Value> callback, String key, Duration wait) {
         super(callback);
         this.client = client;
         this.key = key;
         this.wait = wait;
     }
 
-    public KeyValueWatcher(KeyValueClient client, ConsulWatcherCallback<Value> callback, String key) {
+    public KeyValueWatcherTask(KeyValueClient client, ConsulWatcherCallback<Value> callback, String key) {
         this(client, callback, key, Duration.ofMinutes(10));
     }
 

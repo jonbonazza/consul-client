@@ -9,7 +9,7 @@ import com.orbitz.consul.option.PutOptionsBuilder;
 import com.orbitz.consul.option.QueryOptions;
 import com.orbitz.consul.util.ClientUtil;
 import com.orbitz.consul.watch.ConsulWatcherCallback;
-import com.orbitz.consul.watch.KeyValueWatcher;
+import com.orbitz.consul.watch.KeyValueWatcherTask;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.NotFoundException;
@@ -292,10 +292,10 @@ public class KeyValueClient {
     }
 
     public FutureTask<Void> watch(String key, ConsulWatcherCallback<Value> callback) {
-        return new FutureTask<>(new KeyValueWatcher(this, callback, key), null);
+        return new FutureTask<>(new KeyValueWatcherTask(this, callback, key), null);
     }
 
     public FutureTask<Void> watch(String key, ConsulWatcherCallback<Value> callback, Duration wait) {
-           return new FutureTask<>(new KeyValueWatcher(this, callback, key, wait), null);
+           return new FutureTask<>(new KeyValueWatcherTask(this, callback, key, wait), null);
     }
 }

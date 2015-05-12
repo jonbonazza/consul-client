@@ -4,19 +4,19 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.FutureTask;
 
-public abstract class Watcher<T> implements Runnable {
+public abstract class WatcherTask<T> implements Runnable {
 
     private ConcurrentLinkedQueue<WatcherEvent<T>> channel = new ConcurrentLinkedQueue<>();
     private ChannelProcessor<T> channelProcessor;
 
-    public Watcher(ConsulWatcherCallback<T> callback) {
+    public WatcherTask(ConsulWatcherCallback<T> callback) {
         channelProcessor = new ChannelProcessor<>(channel, callback);
     }
 
     /**
      * Watches a resource and pushes any events to the responseChannel queue.
      *
-     * @param responseChannel A queue that events are pushed to to be processed by the Watcher thread.
+     * @param responseChannel A queue that events are pushed to to be processed by the WatcherTask thread.
      */
     protected abstract void watch(Queue<WatcherEvent<T>> responseChannel);
 
